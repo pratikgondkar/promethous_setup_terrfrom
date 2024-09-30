@@ -10,7 +10,7 @@ variable "instance_type" {
 
 variable "key_name" {
   type    = string
-  default = "rana"
+  default = "tool"
 }
 
 variable "instance_name_public" {
