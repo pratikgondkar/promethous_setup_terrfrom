@@ -1,0 +1,4 @@
+---
+# vars file for Prometheus-role
+
+prometheus_version: "2.30.0"

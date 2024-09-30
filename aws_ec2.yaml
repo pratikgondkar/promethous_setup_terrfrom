@@ -1,0 +1,17 @@
+---
+plugin: aws_ec2
+regions:
+   - us-west-1
+filters:
+  tag:Name:
+    - "private-instance-01"
+    - "private-instance-02"
+compose:
+  # ansible_host: public_ip_address  # For public instances
+   ansible_host: private_ip_address  # Uncomment if using private instances
+# Optional: Use strict mode to enforce only these hosts
+strict: False
+# Optional: cache the inventory for better performance
+cache: True
+cache_timeout: 600  # seconds
+ansible_ssh_common_args: '-o ConnectTimeout=60'

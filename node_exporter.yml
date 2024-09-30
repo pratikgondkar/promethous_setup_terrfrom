@@ -1,0 +1,7 @@
+---
+- hosts: aws_ec2
+  remote_user: ubuntu
+  gather_facts: yes
+  become: true
+  roles:
+    - node-exporter

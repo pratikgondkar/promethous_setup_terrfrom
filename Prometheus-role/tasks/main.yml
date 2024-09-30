@@ -1,0 +1,19 @@
+- name: Install Prometheus on Debian
+  apt:
+    name: prometheus
+    state: present
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Install Prometheus on Red Hat
+  yum:
+    name: prometheus
+    state: present
+    update_cache: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure Prometheus
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+  notify: restart prometheus

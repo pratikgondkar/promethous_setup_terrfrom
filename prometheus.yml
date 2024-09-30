@@ -1,0 +1,6 @@
+---
+- hosts: aws_ec2
+  gather_facts: yes
+  become: true
+  roles:
+    -  Prometheus-role

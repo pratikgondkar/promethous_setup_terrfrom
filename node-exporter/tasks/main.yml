@@ -1,0 +1,47 @@
+- name: Install prerequisites
+  become: true
+  block:
+    - name: Install unzip package (Debian)
+      apt:
+        name: unzip
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install unzip package (Red Hat)
+      yum:
+        name: unzip
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+- name: Download Node Exporter
+  get_url:
+    url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+    dest: /tmp/node_exporter.tar.gz
+
+- name: Extract Node Exporter
+  unarchive:
+    src: /tmp/node_exporter.tar.gz
+    dest: /opt
+    remote_src: yes
+    creates: /opt/node_exporter-{{ node_exporter_version }}
+
+- name: Symlink Node Exporter
+  file:
+    src: "/opt/node_exporter-{{ node_exporter_version }}/node_exporter"
+    dest: /usr/local/bin/node_exporter
+    state: link
+    force: yes
+    follow: false
+
+- name: Configure systemd service
+  template:
+    src: node_exporter.service.j2
+    dest: /etc/systemd/system/node_exporter.service
+  notify: restart node_exporter
+
+- name: Start Node Exporter service
+  service:
+    name: node_exporter
+    state: started
+    enabled: yes
+

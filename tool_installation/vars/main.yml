@@ -1,0 +1,6 @@
+---
+repo: deb https://packages.grafana.com/oss/deb stable main
+key: https://packages.grafana.com/gpg.key
+baseurl: https://packages.grafana.com/oss/rpm
+gpgkey: https://packages.grafana.com/gpg.key
+server_port: 3000

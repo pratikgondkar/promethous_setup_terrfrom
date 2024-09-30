@@ -1,0 +1,43 @@
+- name: apt-key add
+  apt_key:
+    url: "{{ key }}"
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: clone apt repository
+  apt_repository:
+    repo: "{{ repo }}"
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: install grafana in ubuntu
+  apt:
+    update_cache: true
+    name: grafana
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: clone yum repository
+  yum_repository:
+    name: grafana
+    baseurl: "{{ baseurl }}"
+    repo_gpgcheck: yes
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: "{{ gpgkey }}"
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+  when: ansible_os_family == "RedHat"
+ 
+- name: install grafana in centos
+  yum:
+    name: grafana
+    state: present
+  when: ansible_os_family == "RedHat"
+ 
+- name: generating cfg file
+  template:
+    src: myconfig.j2
+    dest: /etc/grafana/grafana.ini
+  notify: restart grafana
+  when: ansible_os_family in ["Debian", "RedHat"] 
