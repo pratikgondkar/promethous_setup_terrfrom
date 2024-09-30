@@ -1,7 +1,7 @@
 ---
 plugin: aws_ec2
 regions:
-   - us-west-1
+   - ap-south-1
 filters:
   tag:Name:
     - "private-instance-01"
